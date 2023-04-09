@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/clientstyle.css">
+
+	
+</head>
+<body>
+
+	<div class="container-fluid p-3 bg-dark text-light ">
+		<div class="row">
+			<div class="col-lg-6">
+				<h3 class="mb-0 h-font"><a href="/dashboard">Sigma Risk Calculator</a></h3>
+			</div>
+			<div class="col-lg-6  d-flex align-items-center justify-content-end sticky-top">
+				<a href="/logout" class="btn btn-light btn-sm">LOG OUT</a>
+			</div>
+		</div>
+        
+        
+    </div>
+	<div class="custom-alert">
+		<div class="alert-box">
+		  <h2>Alert</h2>
+		  <p id="alert-message"></p>
+		  <button onclick="hideAlert()">OK</button>
+		</div>
+	  </div>
+	<div>
+
+	<h3 class="text-center">New Client</h3>
+	</div>
+	<div class="process-wrapper">
+	<div id="progress-bar-container">
+		<div>
+			<ul>
+				<li class="step step1 active"><div class="step-inner">Client Details</div></li>
+				<li class="step step2 "><div class="step-inner">Entity Details</div></li>
+				<li class="step step3 "><div class="step-inner">Operational Country</div></li>
+				<li class="step step4" id="ben"><div class="step-inner">Ultimate Beneficial Owner</div></li>
+				<li class="step step5"><div class="step-inner">Legal BO's</div></li>
+				<li class="step step6"><div class="step-inner">Individual BO's</div></li>
+				<li class="step step7"><div class="step-inner">Directors</div></li>
+				<li class="step step8"><div class="step-inner">Products</div></li>
+				<li class="step step9"><div class="step-inner">Sanction Screening</div></li>
+				<li class="step step10"><div class="step-inner">Negative News Screening</div></li>
+				<li class="step step11"><div class="step-inner">Screening Review</div></li>
+				<li class="step step12"><div class="step-inner">Risk Summary</div></li>
+				<li class="step step13"><div class="step-inner">Download Report</div></li>
+			</ul>
+		</div>
+		
+		<div id="line">
+			<div id="line-progress"></div>
+		</div>
+	</div>
+	<br>
+
+	<div id="progress-content-section">
+
+		<!-- form for client details  -->
+		
+			<div class="section-content  clientD active" id="client1">
+				<div class="conatiner  client" >
+					<form method="POST" onsubmit="return submitForm();">
+						<br>
+						<label for="registeredname">Registered Name:</label>
+						<input type="text" id="registeredname"  name="registeredname" required >
+				
+						<label for="trading-name">Trading Name (if any):</label>
+						<input type="text" id="trading_name" name="trading_name">
+				
+						<label for="previous-name">Previous Name (if any):</label>
+						<input type="text" id="previous_name" name="previous_name">
+				
+						<label for="registered_address">Registered Address:</label>
+						<input type="text" id="registered_address" name="registered_address" required >
+				
+						<label for="incorporation-date">Incorporation Date:</label>
+						<input type="date" id="incorporation_date" name="incorporation_date" required>
+						<br>
+						<label for="incorporation-country">Incorporation Country:</label>
+						<select name="incorporation_country" id="incorporation_country" required>
+							<option value="PAK">Pakistan</option>
+							<option value="IND">India</option>
+							<option value="UK">United Kingdom</option>
+							<option value="AUS">Australia</option>
+						</select>
+					
+						<button  type="submit" >Continue</button>
+					</form>
+				</div>
+				<div class="container-fluid" style="width:50%">
+					<div class="container mt-5 api">
+						<img src="{{ url_for('static', filename='flag2.jpg') }}" alt="">
+						<p>Transparency International Rank = 140/180 </p>
+						<p>FATF Membership = Asia Pacific Group (APG)</p>
+						<p>FATF Grey List = Yes</p>
+						<p>EU recognised High Risk Country = Yes</p>
+						<p>Basel AML Index = 6.3</p>
+						<p>Country Score = 7</p>
+					</div>
+				</div>
+			</div>
+		
+			<div class="section-content clientdetail " id="client2">
+					<div class="client2">
+					<form method="POST" onsubmit="return submitEntity();">
+						<h2>Entity Type:</h2>
+						<div>
+							<input type="radio" name="entity-type" value="regulated"  required>
+							<label for="regulated-radio">Regulated</label>
+							<input type="radio" name="entity-type" value="not-regulated" required>
+							<label for="non-regulated-radio">Non Regulated</label>
+						</div>
+						<div>
+							<label for="country-regulation">Country of Regulation:</label>
+							<input type="text" id="country-regulation"  name="country-regulation"  placeholder="enter only if regulated">
+						</div>
+						<div>
+							<input type="radio" name="listed" value="listed" required>
+							<label for="listed-radio">Listed</label>
+							<input type="radio" name="listed" value="not-listed" required>
+							<label for="not-listed-radio">Not-Listed</label>
+						</div>
+						<div id="country-of-listing">
+							<label for="country-listing">Country of Listing:</label>
+							<input type="text" id="country-listing"  name="country-listing"  placeholder="enter if listed">
+						</div>
+						<div>
+							<label>% Free Floating on Stock Exchange:</label>
+							<input type="text" id="free_floating" name="free-floating" >
+						</div>
+						<div>
+							<label>Industry Type:</label>
+							<select id="industry_type" name="industry-type" required>
+							<option value="capital-markets">Capital Markets</option>
+							<option value="healthcare">Healthcare</option>
+							<option value="technology">Technology</option>
+							</select>
+						</div>
+						<div>
+							<label>Type of Shares Capital:</label>
+							<div>
+							<input type="radio" name="shares-capital" value="bearer-shares-private" id="bearer-shares-private-radio" required>
+							<label for="bearer-shares-private-radio">Bearer Shares Held Privately by Beneficial Owners</label>
+							</div>
+							<div>
+								<input type="radio" name="shares-capital" value="bearer-shares-institution" id="bearer-shares-institution-radio" required>
+							<label for="bearer-shares-institution-radio">Bearer Shares Held in Custody of Reputable Regulated Financial Institution</label>
+							</div>
+							<div>
+								<input type="radio" name="shares-capital" value="registered-shares" id="registered-shares-radio"required>
+								<label for="registered-shares-radio">Registered Shares with Local Companies Registry</label>
+							</div>
+						</div>
+						<div style="display: flex; justify-content: space-between;">
+							<span class="button btn-danger step1">PREVIOUS</span>
+							<button type="submit" >NEXT</button> 
+						</div>
+				</form>
+				</div>
+			</div>
+		
+			<div class="section-content client3" id="client3">
+				<div class="container">
+					<form method="POST" onsubmit="return submitOps();">
+					<div class="row">
+						<div class="col-lg-6">
+							
+								<h2 class="bg-dark text-center text-white">Country of Operations (Top 5 countries of operations by trade revenue)</h2>
+								<div >
+									<div >
+										<table class="table table-hover bg-white" id="myTable4">
+											<thead class="bg-dark text-white">
+											<tr >
+												<th>Country Name</th>
+												<th>Does the client has 
+													physical presence 
+													in this country</th>
+												<th>Percentage revenue 
+													generated from 
+													country</th>
+												<th></th>
+											</tr>
+											</thead>
+											
+											<tbody id="tbody4">
+												<tr class="data-row">
+													<td><input type="text" id="col_country" name="col_country" required /></td>
+													<td><input type="checkbox" style="width:100%; transform: scale(1.5);" id="col_physical" name="col_physical" /></td>
+													<td><input type="number" id="col_percentage" name="col_percentage" required />
+													</td><td><button class="remove bg-danger">-</button></td>
+												</tr>
+											</tbody>
+											<tfoot>
+												<tr>
+												<td colspan="8"><button class="btn-success" id="addRow4">+</button></td>
+												</tr>
+											</tfoot>
+										</table>
+										
+									</div>
+								</div>
+								
+						</div>
+
+						<div class="col-lg-6">
+								<div class="container mt-5 countryData">
+	
+									<p>Display Country Data</p>
+									
+								</div>
+						</div>
+					</div>
+					<div style="display: flex; justify-content: space-between;">
+						<span class="button btn-danger step2">PREVIOUS</span>
+						<button type="submit" >NEXT</button> 
+						<!-- class="step step03 mt-3"  -->
+					</div>
+					</form>
+					
+				</div>
+			</div>
+		
+			
+		
+			<div class="section-content benOwner" id="benOwner">
+			
+			<div>
+				<form method="POST" onsubmit="return submitBen();">
+					<div>
+						<table class="table table-hover bg-white" id="myTable">
+						<thead>
+						<tr class="text-white">
+							<th>Type of Beneficial Owner</th>
+							<th>Name of Beneficial Owner</th>
+							<th>Country of Incorporation / Citizenship</th>
+							<th>Percentage Ownership</th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody id="tbody1">
+							<tr class="ben-data">
+								<td><select name="Btype" id="Btype" required>
+									<option value="">Select Beneficial Owner type</option>
+									<option value="Legal Entity">Legal Entity</option>
+									<option value="individual">Individual</option>
+								</select></td>
+								<td><input type="text" id="BenName" name="BenName" required/></td>
+								<td><input type="text" id="citizenship" name="citizenship"  required/></td>
+								<td><input type="text"  id="ownerpercent" name="ownerpercent" required/></td>
+								<td><button class="remove">-</button></td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="5"><span class="btn-success" style="font-size: 20px;" id="addRow">+</span></td>
+							</tr>
+						</tfoot>
+						</table>
+					</div>
+					<div style="display: flex; justify-content: space-between;">
+						<span class="button btn-danger step3">PREVIOUS</span>
+						<button type="submit" >NEXT</button> 
+						<!-- class="step step03 mt-3"  -->
+					</div>
+				</form>
+			</div>
+			</div>
+
+			<div class="section-content benOwner2" id="benOwner2">
+				<div class="container">
+					<h2 class="text-center mb-4 h-font">Additional info of holders of Legal Owners</h2>
+					<div class="row">
+						<div class="col-lg-12">
+							<p><span class="bg-dark text-white">Note:</span>If all share holders of Legal Beneficiary Type are lesser or equal to 25% 
+								just check the checkbox in below table.Otherwise, fill the below one.
+							</p>
+							<div class="mb-5">
+								<table class="table-hover bg-white">
+									<thead class="bg-dark">
+										<tr class="text-white">
+											<th>Legal Beneficiaries</th>
+											<th>percentage < = 25%</th>
+										</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>All</td>
+												<td><input type="checkbox" id="legalBenCheck" name="legalBenCheck" /></td>
+											</tr>
+										</tbody>
+								</table>
+							</div>
+							
+							<form method="POST" onsubmit="return submitBen2();">
+								<div>
+									<table class="table table-hover bg-white" id="LegalTable">
+									<thead class="bg-dark">
+									<tr class="text-white">
+										<th>Holder of</th>
+										<th>Type of Beneficial Owner</th>
+										<th>Name</th>
+										<th>Country of Incorporation</th>
+										<th>Percentage Ownership</th>
+										<th></th>
+									</tr>
+									</thead>
+									<tbody id="legaltbody">
+										<tr class="legal-data">
+											<td><select name="select-options" id="select-options" required>
+											</select></td>
+											<td><select name="Btype" id="Btype" required>
+												<option value="">Select Legal Beneficial Owner</option>
+												<option value="Legal Entity">Legal Entity</option>
+												<option value="Individual">Individual</option>
+											</select></td>
+											<td><input type="text" id="legalName" name="legalName" required/></td>
+											<td><input type="text" id="legalinc" name="legalinc"  required/></td>
+											<td><input type="number"  id="percentage-input" class="percentage-input" name="percentage-input" required/></td>
+											<td><span class="remove">-</span></td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="6"><span class="btn-success" style="font-size: 20px;" id="addLegal">+</span></td>
+										</tr>
+									</tfoot>
+									</table>
+								</div>
+								<div style="display: flex; justify-content: space-between;">
+									<span class="button btn-danger step4">PREVIOUS</span>
+									<button type="submit" >NEXT</button> 
+									<!-- class="step step03 mt-3"  -->
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="section-content benOwner3" id="benOwner3">
+				<div class="container">
+					<h2 class="text-center mb-4 h-font">Additional info of holders of Individual Owners</h2>
+					<div class="row">
+
+						<div class="col-lg-12">
+							<form method="POST" onsubmit="return submitBen3();">
+								<div>
+									<table class="table table-hover bg-white">
+									<thead class="bg-dark">
+									<tr class="text-white">
+										<th>Holder of</th>
+										<th>Type of Beneficial Owner</th>
+										<th>Name</th>
+										<th>Citizenship</th>
+										<th>Country of residence </th>
+										<th>Address</th>
+										<th>Date-of-birth</th>
+										<th></th>
+									</tr>
+									</thead>
+									<tbody id="Inditbody">
+										<tr class="indi-data">
+											<td><select name="select-indi" id="select-indi"></select></td>
+											<td><select name="Inditype" id="Inditype" required>
+												<option value="">Select Beneficial Owner type</option>
+												<option value="Legal Entity">Legal Entity</option>
+												<option value="Individual">Individual</option>
+											</select></td>
+											<td><input type="text" id="IndiName" name="IndiName" required/></td>
+											<td><input type="text" id="Indicitizenship" name="Indicitizenship"  required/></td>
+											<td><input type="text"  id="cor" name="cor" required/></td>
+											<td><input type="text" id="addr" name="addr" required/></td>
+											<td><input type="date" id="dob" name="dob" class="dob" required/></td>
+											<td><span class="remove" >-</span></td>
+										</tr>
+									</tbody>
+									<tfoot>
+										<tr>
+											<td colspan="8"><span class="btn-success" style="font-size: 20px;" id="addIndi">+</span></td>
+										</tr>
+									</tfoot>
+									</table>
+								</div>
+								<div style="display: flex; justify-content: space-between;">
+									<span class="button btn-danger step5">PREVIOUS</span>
+									<button type="submit" >NEXT</button> 
+									
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+	
+		
+		<div class="section-content Directors" id="Directors">
+			<form method="POST" onsubmit="return submitDir();">
+			<div>
+				<table class="table table-hover bg-white" id="myTable2">
+					<thead>
+					  <tr class="text-white bg-dark">
+						<th>Director Type</th>
+						<th>Director Name</th>
+						<th>Date of Birth</th>
+						<th>Address</th>
+						<th>City</th>
+						<th>Country</th>
+						<th>Authorised Signatory</th>
+						<th></th>
+					  </tr>
+					</thead>
+					<tbody id="tbody2">
+					  <tr class="Dir-data">
+						<td><select name="dt" id="dt">
+							<option value="">select director type</option>
+							<option value="Legal Entity">Legal Entity</option>
+							<option value="Individual">Individual</option>
+						  </select></td>
+						<td><input type="text" name="dname" /></td>
+						<td><input type="date" name="d_dob" /></td>
+						<td><input type="text" name="d_addr" /></td>
+						<td><input type="text" name="d_city" /></td>
+						<td><input type="text" name="d_country" /></td>
+						<td><input type="checkbox" style="width:100%; transform: scale(1.5);" name="Signatory" id="Signatory"/></td>
+						<td><button class="remove btn-danger">-</button></td>
+					  </tr>
+					</tbody>
+					<tfoot>
+					  <tr>
+						<td colspan="8"><span class="btn-success f-20" id="addRow2">+</span></td>
+					  </tr>
+					</tfoot>
+				</table>
+				
+				<div style="display: flex; justify-content: space-between;">
+					<span class="button btn-danger step6">PREVIOUS</span>
+					<button type="submit" >NEXT</button> 
+				</div>
+				
+			</div>
+		   </form>
+		</div>
+		
+		<div class="section-content products" id="products">
+			<form method="POST" onsubmit="return submitProd();">
+			<div>
+				
+				<table class="table table-hover bg-white" id="myTable3">
+					<thead>
+					  <tr class="text-white bg-dark">
+						<th>#</th>
+						<th>Product</th>
+						<th>Anticipated Volumes of Transactions Per Year</th>
+						<th>Anticipated Value of Transactions Per Year (USD)</th>
+						<th>Anticipate Average Value of Transaction (USD)</th>
+						<th></th>
+					  </tr>
+					</thead>
+					<tbody id="tbody3">
+					</tbody>
+					<tfoot>
+					  <tr>
+						<td colspan="8"><span class="btn-success" id="addRow3">+</span></td>
+					  </tr>
+					</tfoot>
+				</table>
+				<div style="display: flex; justify-content: space-between;">
+					<span class="button btn-danger step7">PREVIOUS</span>
+					<button type="submit" >NEXT</button> 
+				</div>
+				
+			</div>
+		</form>
+		</div>
+		
+		<div class="section-content sanction" id="sanction">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6">
+						<div>
+							<table class="table bg-white table-hover">
+							<thead class="bg-dark text-white">
+							  <tr>
+								<th scope="col">Sanctions Screening</th>
+								<th scope="col">OFAC</th>
+								<th scope="col">UNSC</th>
+								<th scope="col">EU</th>
+								<th scope="col">OFSI</th>
+							  </tr>
+							</thead>
+							<tbody>
+							  <tr>
+								<td id="entityName"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td id="related-entity"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td id="BeneficialOwner"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td id="Dirname"></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-lg-6">
+
+					</div>
+					<div style="display: flex; justify-content: space-between;">
+						<span class="button btn-danger step8">PREVIOUS</span>
+						<button type="submit" >NEXT</button> 
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="section-content negnew">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-6">
+						<div>
+							<table class="table bg-white table-hover">
+							<thead class="bg-dark text-white">
+							  <tr>
+								<th scope="col">Sanctions Screening</th>
+								<th scope="col">Customise Screening Range</th>
+								<th scope="col">Review Results</th>
+							  </tr>
+							</thead>
+							<tbody>
+							  <tr>
+								<td>Entity Name</td>
+								<td></td>
+								<td><button class="btn-dark rounded">Review Result</button></td>
+							</tr>
+							<tr>
+								<td>Related Entity Name</td>
+								<td>a</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Beneficial Owner Name</td>
+								<td>a</td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>Director Name</td>
+								<td>a</td>
+								<td></td>
+							</tr>
+							</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="col-lg-6">
+						<div class="text-center">
+							<p>results will come here from API's</p>
+						</div>
+					</div>
+				</div>
+				<div style="display: flex; justify-content: space-between;">
+					<span class="button btn-danger step9">PREVIOUS</span>
+					<button type="submit" >NEXT</button> 
+					<!-- class="step step03 mt-3"  -->
+				</div>
+			</div>
+		</div>
+
+
+		<div class="section-content screening">
+			<div>
+				<fieldset>
+					<legend>PEP and Sanctions Check</legend>
+					<label for="pep">Is there any Politically Exposed Person identified within the control structure?</label>
+					<select name="pep" id="pep">
+						<option value="no">No</option>
+						<option value="ubo">PEP as Ultimate Beneficial Owner</option>
+						<option value="relative">PEP as Relative Close Associate of Family Member</option>
+						<option value="director">PEP as director in a state owned enterprise</option>
+					</select>
+					<br>
+					<label for="sanctions">Is there any sanctions nexus identified?</label>
+					<select name="sanctions" id="sanctions">
+						<option value="no">No</option>
+						<option value="entity">Entity is sanctioned under (OFAC/OFSI/EU/UNSC)</option>
+						<option value="related">Related Entity is sanctioned under (OFAC/OFSI/EU/UNSC)</option>
+						<option value="ubo">UBO is sanctioned</option>
+						<option value="director">Director is Sanctioned</option>
+					</select>
+					<br>
+					<label for="news">Is there any material negative news identified on the entity or related individual?</label>
+					<select name="news" id="news">
+						<option value="no">No</option>
+						<option value="settled">Material Negative News Settled (Historical with no evidence of repeat offense)</option>
+						<option value="investigation">Material Negative News Under Investigation by competent authorities</option>
+						<option value="reported">Material Negative News reported in media outlets but not under investigation</option>
+					</select>
+					<br>
+				</fieldset>
+				<div style="display: flex; justify-content: space-between;">
+					<span class="button btn-danger step10">PREVIOUS</span>
+					<button type="submit" >NEXT</button> 
+					<!-- class="step step03 mt-3"  -->
+				</div>
+			</div>
+		</div>
+
+
+		<div class="section-content bg-white Risk">
+			<div class=" container">
+				<div class="row">
+					<h1 class="text-center d-flex justify-content-center">Risk Summary</h1>
+						<br>
+						<!-- client details  -->
+						<div class="col-lg-6 bg-white  client" style="width:50%" >
+					
+								
+								<h3>Client Details:</h3>
+								<br>
+								<div class=" d-flex flex-row">
+									<label class="summarylabel" for="client-name">Client Name:</label> <br>
+									<p class="summaryp">-----</p>
+								</div>
+								<div class=" d-flex flex-row justify-content-between">
+									<label class="summarylabel" for="client-name">Trading Name:</label> <br>
+									<p class="summaryp">N/A</p>
+									<label class="summarylabel" for="client-name">Previous Name:</label> <br>
+									<p class="summaryp">N/A</p>
+								</div>
+								<div class=" d-flex flex-row">
+									<label class="summarylabel" for="client-name">Registered Address:</label> <br>
+									<p class="summaryp">N/A</p>
+								</div>
+								<div class="d-flex flex-row justify-content-between">
+									<label for="incorporation-date">Incorporation Date:</label>
+									<p class="summaryp">13/12/2008</p>
+									<label for="incorporation-country">Incorporation Country:</label>
+									<p class="summaryp">Pakistan</p>
+								</div>
+						</div>
+						<div class="col-lg-6" style="width:50%; height: 100%;">
+							<div class="container mt-5 api">
+								<img src="{{ url_for('static', filename='flag2.jpg') }}" alt="">
+								<p>Transparency International Rank = 140/180 </p>
+								<p>FATF Membership = Asia Pacific Group (APG)</p>
+								<p>FATF Grey List = Yes</p>
+								<p>EU recognised High Risk Country = Yes</p>
+								<p>Basel AML Index = 6.3</p>
+								<p>Country Score = 7</p>
+							</div>
+						</div>
+						
+						<br>
+						<hr>
+						<div class="col-lg-12" >
+							<h3>Ultimate Beneficial Owners</h3>
+							<div class="col-lg-12 bg-white" style="width:50%" >
+
+									<div class=" d-flex flex-row">
+										<label class="summarylabel" for="client-name">Type of Beneficial Owner:</label> <br>
+										<p class="summaryp">-----</p>
+									</div>
+									<div class=" d-flex flex-row justify-content-between">
+										<label class="summarylabel" for="client-name">Beneficial Owner Name:</label> <br>
+										<p class="summaryp">N/A</p>
+										<label class="summarylabel" for="client-name">Country of Incorporation</label> <br>
+										<p class="summaryp">N/A</p>
+									</div>
+									<div class=" d-flex flex-row">
+										<label class="summarylabel" for="client-name">Persentage Ownership</label> <br>
+										<p class="summaryp">N/A</p>
+									</div>
+								
+							</div>
+
+						</div>
+						<div class="col-lg-12" >
+							<h3>Directors</h3>
+							<div class="col-lg-12 bg-white" >
+									<div class=" d-flex flex-row">
+										<label class="summarylabel" for="client-name">Director Name:</label> <br>
+										<p class="summaryp">------</p>
+									</div>
+									<div class=" d-flex flex-row justify-content-between">
+										<label class="summarylabel" for="client-name">Director Type:</label> <br>
+										<p class="summaryp">N/A</p>
+										<label class="summarylabel" for="client-name">Authorised Signatory</label> <br>
+										<p class="summaryp">N/A</p>
+									</div>
+							</div>
+						</div>
+						<div class="col-lg-12" >
+							<h3>Products</h3>
+							<div class="col-lg-12 bg-white" >
+									<div class=" d-flex flex-row justify-content-between">
+										<label class="summarylabel" for="client-name">Product</label> <br>
+										<p class="summaryp">****</p>
+										<label class="summarylabel" for="client-name">Anticipate Average Value of Transaction (USD)</label> <br>
+										<p class="summaryp">****</p>
+										
+									</div>
+									<div class=" d-flex flex-row justify-content-between">
+										<label class="summarylabel" for="client-name">Anticipated Volumes of Transactions Per Year</label> <br>
+										<p class="summaryp">N/A</p>
+										<label class="summarylabel" for="client-name">Anticipated Value of Transactions Per Year (USD)</label> <br>
+										<p class="summaryp">N/A</p>
+									</div>
+							</div>
+						</div>
+						<hr>
+						<div class="col-lg-6 bg-white  client" style="width:50%" >
+							<h3>Sanction Screening</h3>
+
+						</div>
+						<div class="col-lg-6" style="width:50%; height: 100%;">
+							<h3>Negative News Screening</h3>
+						</div>
+						
+						<div style="display: flex; justify-content: space-between;">
+							<span class="button btn-danger step11">PREVIOUS</span>
+							<button type="submit" >NEXT</button> 
+							
+						</div>
+
+				</div>
+				
+			</div>
+			
+			
+		</div>
+		<div class="section-content report">
+			<div>
+					<h2>Download Report</h2>
+					<br>
+					<a href="#" class="btn btn-info btn-lg">
+						<span class="glyphicon glyphicon-download-alt"></span> Download
+					</a>
+				
+			</div>
+			
+			
+		</div>
+		</div>
+	</div>
+	<script>
+		function alert(message) {
+		// Set the message in the custom alert box
+		document.getElementById('alert-message').innerHTML = message;
+		
+		// Display the custom alert box
+		document.querySelector('.custom-alert').style.display = 'block';
+		 // Set a timeout to hide the custom alert box after 2 seconds
+			setTimeout(hideAlert, 1000);
+		}
+
+		function hideAlert() {
+		document.querySelector('.custom-alert').style.display = 'none';
+		}
+
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="/static/js/index.js"></script>
+	<script src="/static/js/main.js"></script>
+	<script>
+		let i=0; //for client data
+		let e=0; //for entity data
+		let o=0; //for country operation
+		function submitForm() {
+		  // Submit the form data to the Flask function using an AJAX request
+		  
+		  if(i==0){
+			i++;
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '{{ url_for("ClientData") }}', true);
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.onload = function() {
+				if (xhr.status === 200) {
+					const firstDiv = document.getElementById("client1");
+					firstDiv.classList.remove("active");
+					const secondDiv = document.getElementById("client2");
+					secondDiv.classList.add("active");
+
+				alert('Form submitted!');
+				console.log('Form submitted!');
+				} else {
+				// Error handling here.
+				console.log('Error submitting form!');
+				}
+			};
+			xhr.onerror = function() {
+				console.log('Error submitting form!');
+			};
+			xhr.send(JSON.stringify({
+				regname: document.getElementById('registeredname').value,
+				tradname: document.getElementById('trading_name').value,
+				prevname: document.getElementById('previous_name').value,
+				regadd: document.getElementById('registered_address').value,
+				incdate: document.getElementById('incorporation_date').value,
+				inccountry: document.getElementById('incorporation_country').value}));
+		
+			// Return false to prevent the default form submission
+			return false;
+		
+		  }
+		  else{
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '{{ url_for("NewClient") }}', true);
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.onload = function() {
+				if (xhr.status === 200) {
+					const firstDiv = document.getElementById("client1");
+					firstDiv.classList.remove("active");
+					const secondDiv = document.getElementById("client2");
+					secondDiv.classList.add("active");
+				console.log('Form submitted!');
+				} else {
+				// Error handling here.
+				console.log('Error submitting form!');
+				}
+			};
+			xhr.onerror = function() {
+				console.log('Error submitting form!');
+			};
+			xhr.send(JSON.stringify({
+				regname: document.getElementById('registeredname').value,}));
+		
+			// Return false to prevent the default form submission
+			return false;
+		
+		  }
+		}
+		  
+
+		function submitEntity() {
+		  // Submit the form data to the Flask function using an AJAX request
+		  var entity_type = document.querySelector('input[name="entity-type"]:checked').value; // get the selected entity type
+		  var listed = document.querySelector('input[name="listed"]:checked').value;// get the selected listed type
+		  var sharetype=document.querySelector('input[name="shares-capital"]:checked').value;
+		  var corr=document.querySelector('input[name="country-regulation"]').value;
+
+		  console.log("in entity");
+		if(e==0){
+			e++;
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '{{ url_for("Entity") }}', true);
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.onload = function() {
+				if (xhr.status === 200) {
+					const firstDiv = document.getElementById("client2");
+					firstDiv.classList.remove("active");
+					const secondDiv = document.getElementById("client3");
+					secondDiv.classList.add("active");
+
+				alert('Form submitted!');
+				console.log('Form submitted!');
+				} else {
+				// Error handling here.
+				console.log('Error submitting form!');
+				}
+			};
+			xhr.onerror = function() {
+				console.log('Error submitting form!');
+			};
+			xhr.send(JSON.stringify({
+				entity: entity_type,
+				listed: listed,
+				cor:document.getElementById('country-regulation').value,
+				listedc:document.getElementById('country-listing').value,
+				freeFloat:document.getElementById('free_floating').value,
+				industry:document.getElementById('industry_type').value,
+				share:sharetype}));
+		
+			// Return false to prevent the default form submission
+			return false;
+		
+		  }
+		  else{
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '{{ url_for("NewClient") }}', true);
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.onload = function() {
+				if (xhr.status === 200) {
+					const firstDiv = document.getElementById("client1");
+					firstDiv.classList.remove("active");
+					const secondDiv = document.getElementById("client2");
+					secondDiv.classList.add("active");
+				console.log('Form submitted!');
+				} else {
+				// Error handling here.
+				console.log('Error submitting form!');
+				}
+			};
+			xhr.onerror = function() {
+				console.log('Error submitting form!');
+			};
+			xhr.send(JSON.stringify({
+				regname: document.getElementById('registeredname').value,}));
+		
+			// Return false to prevent the default form submission
+			return false;
+		
+		  }
+		}
+		  
+		function submitOps(){
+			// Find all table rows with the "data-row" class
+			var tableRows = document.querySelectorAll('tr.data-row');
+
+			// Initialize an empty array to store the data
+			var data = [];
+			var checkpercent=0;
+
+			// Loop through each row
+			for (var i = 0; i < tableRows.length; i++) {
+				// Find the input fields in the current row
+				var countryInput = tableRows[i].querySelector('input[name="col_country"]');
+				var physicalInput = tableRows[i].querySelector('input[name="col_physical"]');
+				var percentageInput = tableRows[i].querySelector('input[name="col_percentage"]');
+
+				// Get the values of the input fields
+				var country = countryInput.value;
+				var physical = physicalInput.checked;
+				var percentage = parseInt(percentageInput.value);
+				checkpercent+=percentage;
+
+				// Add the data to the array
+				data.push({country: country, physical: physical, percentage: percentage});
+			}
+			console.log(data);
+
+			if (checkpercent ==100){
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '{{ url_for("operation") }}', true);
+				xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+				xhr.onload = function() {
+					if (xhr.status === 200) {
+						const firstDiv = document.getElementById("client3");
+						firstDiv.classList.remove("active");
+						const secondDiv = document.getElementById("benOwner");
+						secondDiv.classList.add("active");
+
+					alert('Form submitted!');
+					console.log('Form submitted!');
+					} else {
+					// Error handling here.
+					console.log('Error submitting form!');
+					}
+				};
+				xhr.onerror = function() {
+					console.log('Error submitting form!');
+				};
+				xhr.send(JSON.stringify({
+					names:data}));
+			}
+			else{
+				alert("The total percentage of the operational countries should be 100%")
+			}
+		
+			// Return false to prevent the default form submission
+			return false;
+
+		}
+	  
+
+		function submitBen(){
+			// Find all table rows with the "data-row" class
+			var tableRows = document.querySelectorAll('tr.ben-data');
+
+			// Initialize an empty array to store the data
+			var data = [];
+			var percentage=0;
+			console.log('in submitBen');
+			// Loop through each row
+			for (var i = 0; i < tableRows.length; i++) {
+				// Find the input fields in the current row
+				var bentype = tableRows[i].querySelector("select[name='Btype']");
+				var BenName = tableRows[i].querySelector('input[name="BenName"]');
+				var citizenship = tableRows[i].querySelector('input[name="citizenship"]');
+				var OwnerPercent = tableRows[i].querySelector('input[name="ownerpercent"]');
+
+				var dummy=parseFloat(OwnerPercent.value);
+				console.log(dummy);
+				percentage+=dummy;
+				// Add the data to the array
+				data.push({OwnerType: bentype.value, BenName: BenName.value, country:citizenship.value, percentage:dummy,originalPercent:dummy});
+			}
+			console.log(percentage);
+			console.log(data);
+
+			if (percentage ==100){
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '{{ url_for("Beneficial") }}', true);
+				xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+				xhr.onload = function() {
+					if (xhr.status === 200) {
+						const firstDiv = document.getElementById("benOwner");
+						firstDiv.classList.remove("active");
+						const secondDiv = document.getElementById("benOwner2");
+						secondDiv.classList.add("active");
+
+						alert('Form submitted!');
+						console.log('Form submitted!');
+						getBos(data);
+					} else {
+					// Error handling here.
+					console.log('Error submitting form!');
+					}
+				};
+				xhr.onerror = function() {
+					console.log('Error submitting form!');
+				};
+				xhr.send(JSON.stringify({
+					Ben:data}));
+			}
+			else{
+				alert("The total percentage of the beneficial owners should be 100%")
+			}
+		
+			// Return false to prevent the default form submission
+			return false;
+
+		}
+	  
+		function submitBen2(){
+			// Find all table rows with the "data-row" class
+			var tableRows = document.querySelectorAll('tr.legal-data');
+
+			// Initialize an empty array to store the data
+			var data = [];
+			var percentage=0;
+			console.log('in submitBen');
+			// Loop through each row
+			for (var i = 0; i < tableRows.length; i++) {
+				// Find the input fields in the current row
+				var parent = tableRows[i].querySelector("select[name='select-options']").value;
+				const type = tableRows[i].querySelector("select[name='Btype']").value;
+				const name = tableRows[i].querySelector('input[name="legalName"]').value;
+				const inccountry = tableRows[i].querySelector('input[name="legalinc"]').value;
+				var Percent = tableRows[i].querySelector('input[name="percentage-input"]');
+
+				var dummy=parseFloat(Percent.value);
+				var original_holdings= getoriginalPercentage(dummy,parent);
+				// Add the data to the array
+				data.push({Holder_of:parent, Type:type, Name: name, country:inccountry, percentage:dummy,originalHoldings:original_holdings});
+			}
+			console.log('in bell2');
+			console.log(data);
+
+			
+			if (legal.length==0){
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '{{ url_for("LegalBos") }}', true);
+				xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+				xhr.onload = function() {
+					if (xhr.status === 200) {
+						const firstDiv = document.getElementById("benOwner2");
+						firstDiv.classList.remove("active");
+						const secondDiv = document.getElementById("benOwner3");
+						secondDiv.classList.add("active");
+
+						alert('Form submitted!');
+						console.log('Form submitted!');
+					} else {
+					// Error handling here.
+					console.log('Error submitting form!');
+					}
+				};
+				xhr.onerror = function() {
+					console.log('Error submitting form!');
+				};
+				xhr.send(JSON.stringify({
+					Ben:data}));
+			}
+			else{
+				alert(legal);
+			}
+		
+			// Return false to prevent the default form submission
+			return false;
+
+		}
+	  
+		function submitBen3(){
+			// Find all table rows with the "data-row" class
+			var tableRows = document.querySelectorAll('tr.Indi-data');
+
+			// Initialize an empty array to store the data
+			var data = [];
+			var percentage=0;
+			console.log('in indi');
+			// Loop through each row
+			for (var i = 0; i < tableRows.length; i++) {
+				// Find the input fields in the current row
+				var parent = tableRows[i].querySelector("select[name='select-indi']").value;
+				const type = tableRows[i].querySelector("select[name='Inditype']").value;
+				const name = tableRows[i].querySelector('input[name="IndiName"]').value;
+				const citizen = tableRows[i].querySelector('input[name="Indicitizenhsip"]').value;
+				const cor= tableRows[i].querySelector('input[name="cor"]').value;
+				const addr= tableRows[i].querySelector('input[name="addr"]').value;
+				const dob= tableRows[i].querySelector('input[name="dob"]').value;
+
+				// Add the data to the array
+				data.push({Holder_of:parent, Type:type, Name: name, citizenship:citizen, country_of_residence:cor, address:addr, date_of_birth:dob});
+			}
+			console.log('in bell3');
+			console.log(data);
+
+			
+			if (individual.length==0){
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', '{{ url_for("LegalBos") }}', true);
+				xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+				xhr.onload = function() {
+					if (xhr.status === 200) {
+						const firstDiv = document.getElementById("benOwner2");
+						firstDiv.classList.remove("active");
+						const secondDiv = document.getElementById("benOwner3");
+						secondDiv.classList.add("active");
+
+						alert('Form submitted!');
+						console.log('Form submitted!');
+					} else {
+					// Error handling here.
+					console.log('Error submitting form!');
+					}
+				};
+				xhr.onerror = function() {
+					console.log('Error submitting form!');
+				};
+				xhr.send(JSON.stringify({
+					Ben:data}));
+			}
+			else{
+				alert(legal);
+			}
+		
+			// Return false to prevent the default form submission
+			return false;
+
+		}
+	  
+
+		function submitDir(){
+			// Find all table rows with the "data-row" class
+			var tableRows = document.querySelectorAll('tr.Dir-data');
+
+			// Initialize an empty array to store the data
+			var data = [];
+
+			// Loop through each row
+			for (var i = 0; i < tableRows.length; i++) {
+				// Find the input fields in the current row
+				var Dirtype = document.getElementById("dt");
+				var DName = tableRows[i].querySelector('input[name="dname"]');
+				var dob = tableRows[i].querySelector('input[name="d_dob"]');
+				var addr = tableRows[i].querySelector('input[name="d_addr"]');
+				var city = tableRows[i].querySelector('input[name="d_city"]');
+				var country = tableRows[i].querySelector('input[name="d_country"]');
+				var sign = tableRows[i].querySelector('input[name="Signatory"]');
+				var check =sign.checked;
+				var sig=""
+				if(check){
+					sig="yes";
+				}
+				else{
+					sig="no";
+				}
+				console.log(sig);
+				// Add the data to the array
+				data.push({dtype:Dirtype.value, dname:DName.value, dob:dob.value, addr:addr.value, city:city.value, country:country.value, sig:sig});
+			}
+			console.log(data);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '{{ url_for("Directors") }}', true);
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.onload = function() {
+				if (xhr.status === 200) {
+					const firstDiv = document.getElementById("Directors");
+					firstDiv.classList.remove("active");
+					const secondDiv = document.getElementById("products");
+					secondDiv.classList.add("active");
+
+				alert('Form submitted!');
+				console.log('Form submitted!');
+				} else {
+				// Error handling here.
+				console.log('Error submitting form!');
+				}
+			};
+			xhr.onerror = function() {
+				console.log('Error submitting form!');
+			};
+			xhr.send(JSON.stringify({
+				Ben:data}));
+		
+			// Return false to prevent the default form submission
+			return false;
+
+		}
+	  
+		function submitProd(){
+			// Find all table rows with the "data-row" class
+			var tableRows = document.querySelectorAll('tr.prod-data');
+
+			// Initialize an empty array to store the data
+			var data = [];
+
+			// Loop through each row
+			for (var i = 0; i < tableRows.length; i++) {
+				// Find the input fields in the current row
+				var prod = tableRows[i].querySelector('input[name="pname"]');
+				var volume = tableRows[i].querySelector('input[name="pvolume"]');
+				var transection = tableRows[i].querySelector('input[name="pyear"]');
+				var AvgTransection = tableRows[i].querySelector('input[name="pvalue"]');
+				
+				// Add the data to the array
+				data.push({pname:prod.value, pvolume:volume.value, pyear:transection.value, pvalue:AvgTransection.value});
+			}
+			console.log(data);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open('POST', '{{ url_for("Products") }}', true);
+			xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+			xhr.onload = function() {
+				if (xhr.status === 200) {
+					const firstDiv = document.getElementById("products");
+					firstDiv.classList.remove("active");
+					const secondDiv = document.getElementById("sanction");
+					secondDiv.classList.add("active");
+
+				alert('Form submitted!');
+				console.log('Form submitted!');
+					getsanction();
+				} else {
+				// Error handling here.
+				console.log('Error submitting form!');
+				}
+			};
+			xhr.onerror = function() {
+				console.log('Error submitting form!');
+			};
+			xhr.send(JSON.stringify({
+				Ben:data}));
+		
+			// Return false to prevent the default form submission
+			return false;
+
+		}
+
+		function getsanction(){
+			console.log("getsanction");
+
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var result = JSON.parse(xhr.responseText);
+				document.getElementById("entityName").innerHTML = result.entityName;
+				document.getElementById("related-entity").innerHTML = result.relatedEntity;
+				document.getElementById("BeneficialOwner").innerHTML = result.BenOwner;
+				document.getElementById("Dirname").innerHTML = result.Director;
+				console.log(result.entityName);
+			}
+			};
+			xhr.open('GET', '/getSanction');
+			xhr.send();
+		}
+		
+		function getLegalBos(){
+			console.log("getlegalBos");
+
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var options = JSON.parse(xhr.responseText);
+				var select = document.getElementById('select-options');
+				// loop through the options and add them as option tags
+				for (var i = 0; i < options.length; i++) {
+					var option = document.createElement('option');
+					option.text = options[i];
+					select.add(option);
+				}
+				getBos();
+			}
+			};
+			xhr.open('GET', '/getLegal');
+			xhr.send();
+		}
+	  
+	  </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <table id="mytable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Country</th>
+        <th>Percentage</th>
+      </tr>
+    </thead>
+    <tbody id="myTable">
+      <tr>
+        <td><input type="text" name="name" id="name"></td>
+        <td><input type="text" name="cont"></td>
+        <td><input type="text" class="percentage-input" maxlength="3"></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <script>
+    const tbody = document.getElementById("myTable");
+    
+    function store(){
+      // Get a reference to the table element
+      const table = document.getElementById("myTable");
+
+      // Create an empty object to store the table data
+      const data = {};
+
+      // Loop through each row in the table, skipping the header row (index 0)
+      for (let i = 0; i < table.rows.length-1; i++) {
+        // Get the values from each input element in the current row
+        const name = table.rows[i].querySelector('input[name="name"]').value;
+        const country = table.rows[i].querySelector('input[name="cont"]').value;
+        const percentage = table.rows[i].querySelector('.percentage-input').value;
+
+        // Create an object to store the current row data
+        const rowData = { country, percentage };
+
+        // Add the current row data object to the main data object, using the name as the key
+        data[name] = rowData;
+      }
+
+      // Print the resulting data object to the console
+      console.log(data);
+    }
+
+    function addNewRow() {
+      const newRow = tbody.insertRow(-1);
+      const nameCell = newRow.insertCell(0);
+      const countryCell = newRow.insertCell(1);
+      const percentageCell = newRow.insertCell(2);
+      nameCell.innerHTML = '<input type="text" name="name">';
+      countryCell.innerHTML = '<input type="text" name="cont">';
+      percentageCell.innerHTML = '<input type="text" class="percentage-input" maxlength="3">';
+     
+    }
+  
+    function removeRow(row) {
+      tbody.deleteRow(row.rowIndex);
+    }
+
+    tbody.addEventListener("input", function(e) {
+      console.log('input');
+      if (e.target.classList.contains("percentage-input")) {
+        const newPercentage = parseInt(e.target.value);
+        const row = e.target.closest("tr");
+        const nameElement = row.querySelector('input[name="name"]');
+        
+        if (newPercentage > 25) {
+          addNewRow();
+          store();
+        }
+        
+      }
+    });
+  
+      
+        tbody.addEventListener("change", function(e) {
+          console.log('change')
+          if (e.target.classList.contains("percentage-input")) {
+            const updatedPercentage = parseInt(e.target.value);
+           
+            const row = e.target.parentNode.parentNode;
+            if (updatedPercentage <= 25) {
+              removeRow(row);
+            }
+          }
+        });
+      </script>
+      
+      
+    
+</body>
+</html>

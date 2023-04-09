@@ -1,0 +1,41 @@
+div.login-form{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width:400px;
+}
+.custom-bg{
+   background: #0dcaf0;
+}
+
+h1.dash{
+    display: flex;
+    justify-content: center;
+}
+
+.grid{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 430px;
+    margin: 0 auto;
+}
+.box{
+    width: calc(50% - 10px); /* subtract the margin between the boxes */
+  height: 180px;
+  background-color: #ccc;
+  margin-bottom: 20px; /* set the margin between the rows */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.box:last-child{
+    width: calc(100% - 0px);
+}
+p{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    /* margin: auto 0; */
+    font-size: 43px;
+    font-family: "Tahoma";
+}

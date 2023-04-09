@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sigma-Existing Clients</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+
+
+    <style>
+        .pagination {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin-right: 32px;
+        display: flex;
+        list-style: none;
+        }
+
+        /* .pagination li {
+        margin: 0 5px;
+        } */
+        .pagination span{
+            background-color: crimson !important;
+        }
+        .pagination a,
+        .pagination span {
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: #fff;
+        background-color: #007bff;
+        text-decoration: none;
+        }
+
+        .pagination a:hover,
+        .pagination span.current {
+        background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid bg-dark text-light p-3 d-flex align-items-center justify-content-between sticky-top">
+        <h3 class="mb-0 h-font">Sigma Risk Calculator</h3>
+        <a href="/logout" class="btn btn-light btn-sm">LOG OUT</a>
+    </div>
+
+
+
+
+
+
+    <div class="container-fluid" id="main_content">
+        <div class="row">
+            <div class="col-lg-12 ms-auto p-4 overflow-hidden">
+                <h3 class="mb-4">Existing Clients</h3>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <div class="text-end mb-4">
+                            <button type="button" class="btn btn-dark shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#add-rooms">
+                                <i class="bi bi-plus-square"></i>Add
+                            </button>
+                        </div>
+
+                        <div class="table-responsive-lg" style="height: 450px; overflow-y: scroll;">
+                            <table class="table table-hover border">
+                                <thread>
+                                    <tr class="bg-dark text-light">
+                                        <th scope="col"># </th>
+                                        <th scope="col">Registered Name</th>
+                                        <th scope="col">Beneficial Owner</th>
+                                        <th scope="col">Director Name</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thread>
+                                <tbody id="client-data">
+                                    {% for entries in clients %}
+                                    <tr>
+                                        <td>{{loop.index}}</td>
+                                        <td>{{entries[2]}}</td>
+                                        <td>{{entries[3]}}</td>
+                                        <td>{{entries[8]}}</td>
+                                        <td> <button type='button' class='btn btn-primary shadow-none btn-sm' data-bs-toggle='modal' data-bs-target='#edit-rooms'>
+                                                <i class='bi bi-pencil-square'></i>
+                                            </button>
+                                            <button type='button' class='btn btn-danger shadow-none btn-sm' data-bs-toggle='modal'>
+                                                <i class='bi bi-trash'></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+
+                            </table>
+                            {% if total_pages > 1 %}
+                            <div class="pagination">
+                                {% if page > 1 %}
+                                <a href="?page={{ page - 1 }}">Previous</a>
+                                {% endif %}
+                                {% for i in range(1, total_pages + 1) %}
+                                {% if i == page %}
+                                <span>{{ i }}</span>
+                                {% else %}
+                                <a href="?page={{ i }}">{{ i }}</a>
+                                {% endif %}
+                                {% endfor %}
+                                {% if page < total_pages %}
+                                <a href="?page={{ page + 1 }}">Next</a>
+                                {% endif %}
+                                </div>
+                            {% endif %}
+                                
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    
+</body>
+</html>
